@@ -8,6 +8,9 @@ export const inject = ['webServer']
 const ASSET_ROUTE_BASE = '/branding-devdevgg/assets'
 const SIDEBAR_ASSET = 'sidebar.png'
 const HERO_ASSET = 'hero.png'
+const DEFAULT_HERO_SIZE = 96
+const MIN_HERO_SIZE = 34
+const MAX_HERO_SIZE = 160
 
 /**
  * Host-side configuration. The plugin is deliberately inert by default.
@@ -20,6 +23,7 @@ export const Config = z.object({
 
   sidebarEnabled: z.boolean().default(true),
   heroEnabled: z.boolean().default(true),
+  heroSize: z.number().default(DEFAULT_HERO_SIZE),
 
   separateLogosEnabled: z.boolean().default(false),
   sidebarLogo: z.string().default(''),
@@ -46,6 +50,12 @@ function text(value) {
   return typeof value === 'string' ? value : ''
 }
 
+function heroSize(value) {
+  const number = Number(value)
+  if (!Number.isFinite(number)) return DEFAULT_HERO_SIZE
+  return Math.min(MAX_HERO_SIZE, Math.max(MIN_HERO_SIZE, number))
+}
+
 function assetUrl(fileName) {
   return `${ASSET_ROUTE_BASE}/${fileName}`
 }
@@ -63,6 +73,7 @@ function publicConfig(config) {
     mainLogo: text(config.mainLogo),
     sidebarEnabled: config.sidebarEnabled !== false,
     heroEnabled: config.heroEnabled !== false,
+    heroSize: heroSize(config.heroSize),
     separateLogosEnabled: config.separateLogosEnabled === true,
     sidebarLogo: text(config.sidebarLogo),
     heroLogo: text(config.heroLogo),
