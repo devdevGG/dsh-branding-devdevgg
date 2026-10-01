@@ -1,0 +1,19 @@
+- insert:
+    - id: branding-devdevgg
+      name: '@devdevgg/dsh-branding-devdevgg'
+      config:
+        enabled: false
+        brandName: AI DEV LAB
+        mainLogo: ''
+        sidebarEnabled: true
+        heroEnabled: true
+        separateLogosEnabled: false
+        sidebarLogo: ''
+        heroLogo: ''
+        browserTitleEnabled: false
+        browserTitle: AI DEV LAB
+        heroHeadlineEnabled: false
+        heroHeadline: ''
+        heroBadgeEnabled: false
+        heroBadge: ''
+        visualEditorEnabled: false
