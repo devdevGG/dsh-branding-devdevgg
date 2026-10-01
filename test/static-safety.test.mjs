@@ -8,11 +8,18 @@ const pkg = JSON.parse(await readFile(new URL('../package.json', import.meta.url
 
 test('v0.1.0 defaults are fail-closed', () => {
   assert.match(patch, /enabled: false/u)
+  assert.match(patch, /fileAssetsEnabled: false/u)
   assert.match(patch, /browserTitleEnabled: false/u)
   assert.match(patch, /separateLogosEnabled: false/u)
   assert.match(patch, /heroHeadlineEnabled: false/u)
   assert.match(patch, /heroBadgeEnabled: false/u)
   assert.match(patch, /visualEditorEnabled: false/u)
+})
+
+test('v0.1.0 hero size defaults to 96px', () => {
+  assert.match(patch, /heroSize: 96/u)
+  assert.match(client, /DEFAULT_HERO_SIZE = 96/u)
+  assert.match(client, /MAX_HERO_SIZE = 160/u)
 })
 
 test('ModuleLoader registration id matches the scoped npm package name', () => {
