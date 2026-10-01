@@ -15,6 +15,12 @@ test('v0.1.0 defaults are fail-closed', () => {
   assert.match(patch, /visualEditorEnabled: false/u)
 })
 
+test('ModuleLoader registration id matches the scoped npm package name', () => {
+  const match = client.match(/window\.__ModuleLoader__\.load\(\{\s*id:\s*['"]([^'"]+)['"]/u)
+  assert.ok(match, 'client.js must register through __ModuleLoader__.load')
+  assert.equal(match[1], pkg.name)
+})
+
 test('client uses public brand slots and avoids DOM scraping or browser-local persistence', () => {
   assert.match(client, /sidebar\.brand\.mark/u)
   assert.match(client, /sidebar\.brand\.name/u)
