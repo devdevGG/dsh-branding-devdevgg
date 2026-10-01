@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-  id: 'dsh-branding-devdevgg',
+  id: '@devdevgg/dsh-branding-devdevgg',
   factory(require) {
     const React = require('react')
     const h = React.createElement
