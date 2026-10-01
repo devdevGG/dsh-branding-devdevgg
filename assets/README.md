@@ -1,15 +1,24 @@
 # Branding assets
 
-The v0.1.0 repository intentionally does not ship a final logo image yet.
+v0.1.0 supports persistent live PNG assets outside `node_modules` for fast visual iteration.
 
-Target asset for AI DEV LAB:
+Runtime directory:
 
-- transparent PNG (RGBA);
-- approximately square canvas;
-- recommended master size: 512x512 or 1024x1024;
-- readable on both light and dark backgrounds;
-- minimal empty padding around the mark.
+```text
+$DSH_HOME/branding-devdevgg/assets/
+├── sidebar.png
+└── hero.png
+```
 
-The same image will be used for `sidebar.brand.mark` and `conversation.hero.brand.mark` through the `mainLogo` configuration value.
+When `fileAssetsEnabled: true` and the plugin itself is enabled:
 
-A later revision may add a plugin-owned static asset route so a committed `assets/ai-dev-lab-logo.png` can be served from the DSH origin without converting it to a data URL or relying on an external host.
+- `sidebar.png` feeds `sidebar.brand.mark`;
+- `hero.png` feeds `conversation.hero.brand.mark`;
+- both files are served from the DSH origin with `Cache-Control: no-store`;
+- replacing either file only requires a browser refresh (`F5`/`Ctrl+F5`), not a plugin reinstall;
+- the two files may contain the same PNG in v0.1.0;
+- changing one file affects only its corresponding surface.
+
+The files intentionally live under persistent DSH home instead of the installed package so plugin reinstall/upgrade does not erase operator-owned branding assets.
+
+v0.1.0 keeps this mode deliberately narrow: PNG only, fixed filenames, GET/HEAD only, no browser upload/editor surface. A later version may add separate image controls and a visual settings editor.
