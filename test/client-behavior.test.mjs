@@ -32,6 +32,7 @@ function boot(config, title = 'DeepSeek Harness') {
     },
     __DSH_BRANDING_DEVDEVGG__: config,
     Number,
+    Math,
   }
   context.globalThis = context
 
@@ -78,6 +79,7 @@ test('shared logo occupies sidebar and hero while the name occupies only sidebar
     mainLogo: '/logo.png',
     sidebarEnabled: true,
     heroEnabled: true,
+    heroSize: 96,
     separateLogosEnabled: false,
     browserTitleEnabled: false,
   })
@@ -92,7 +94,24 @@ test('shared logo occupies sidebar and hero while the name occupies only sidebar
   const sidebarElement = bySlot.get('sidebar.brand.mark').component({ size: 24 })
   const heroElement = bySlot.get('conversation.hero.brand.mark').component({ size: 34 })
   assert.equal(sidebarElement.props.source, '/logo.png')
+  assert.equal(sidebarElement.props.size, 24)
   assert.equal(heroElement.props.source, '/logo.png')
+  assert.equal(heroElement.props.size, 96)
+})
+
+test('hero size is configurable and bounded independently from sidebar', () => {
+  const result = boot({
+    enabled: true,
+    brandName: '',
+    mainLogo: '/logo.png',
+    sidebarEnabled: true,
+    heroEnabled: true,
+    heroSize: 999,
+  })
+
+  const bySlot = new Map(result.registrations.map((row) => [row.options.name, row]))
+  assert.equal(bySlot.get('sidebar.brand.mark').component({ size: 24 }).props.size, 24)
+  assert.equal(bySlot.get('conversation.hero.brand.mark').component({ size: 34 }).props.size, 160)
 })
 
 test('live file mode routes sidebar and hero to independent persistent assets', () => {
@@ -102,6 +121,7 @@ test('live file mode routes sidebar and hero to independent persistent assets', 
     mainLogo: '/legacy.png',
     sidebarEnabled: true,
     heroEnabled: true,
+    heroSize: 96,
     fileAssetsEnabled: true,
     sidebarAssetUrl: '/branding-devdevgg/assets/sidebar.png',
     heroAssetUrl: '/branding-devdevgg/assets/hero.png',
@@ -116,6 +136,10 @@ test('live file mode routes sidebar and hero to independent persistent assets', 
   assert.equal(
     bySlot.get('conversation.hero.brand.mark').component({ size: 34 }).props.source,
     '/branding-devdevgg/assets/hero.png',
+  )
+  assert.equal(
+    bySlot.get('conversation.hero.brand.mark').component({ size: 34 }).props.size,
+    96,
   )
 })
 
