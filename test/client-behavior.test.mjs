@@ -95,6 +95,30 @@ test('shared logo occupies sidebar and hero while the name occupies only sidebar
   assert.equal(heroElement.props.source, '/logo.png')
 })
 
+test('live file mode routes sidebar and hero to independent persistent assets', () => {
+  const result = boot({
+    enabled: true,
+    brandName: 'AI DEV LAB',
+    mainLogo: '/legacy.png',
+    sidebarEnabled: true,
+    heroEnabled: true,
+    fileAssetsEnabled: true,
+    sidebarAssetUrl: '/branding-devdevgg/assets/sidebar.png',
+    heroAssetUrl: '/branding-devdevgg/assets/hero.png',
+  })
+
+  const bySlot = new Map(result.registrations.map((row) => [row.options.name, row]))
+  assert.equal(result.registrations.length, 3)
+  assert.equal(
+    bySlot.get('sidebar.brand.mark').component({ size: 24 }).props.source,
+    '/branding-devdevgg/assets/sidebar.png',
+  )
+  assert.equal(
+    bySlot.get('conversation.hero.brand.mark').component({ size: 34 }).props.source,
+    '/branding-devdevgg/assets/hero.png',
+  )
+})
+
 test('separate logo mode falls back to main logo per surface', () => {
   const result = boot({
     enabled: true,
