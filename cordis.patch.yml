@@ -7,6 +7,7 @@
         mainLogo: ''
         sidebarEnabled: true
         heroEnabled: true
+        heroSize: 96
         separateLogosEnabled: false
         sidebarLogo: ''
         heroLogo: ''
