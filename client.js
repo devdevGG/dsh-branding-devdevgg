@@ -24,6 +24,13 @@ window.__ModuleLoader__.load({
     }
 
     function sourceFor(cfg, target) {
+      if (cfg.fileAssetsEnabled === true) {
+        const liveAsset = target === 'sidebar'
+          ? text(cfg.sidebarAssetUrl)
+          : text(cfg.heroAssetUrl)
+        if (liveAsset !== '') return liveAsset
+      }
+
       const shared = text(cfg.mainLogo)
       if (cfg.separateLogosEnabled !== true) return shared
       const specific = target === 'sidebar' ? text(cfg.sidebarLogo) : text(cfg.heroLogo)
