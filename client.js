@@ -7,6 +7,9 @@ window.__ModuleLoader__.load({
     const CONFIG_KEY = '__DSH_BRANDING_DEVDEVGG__'
     const OCCUPANT_PRIORITY = -2000
     const IMAGE_SOURCE = /^(?:https?:|data:image\/|blob:|\/)/u
+    const DEFAULT_HERO_SIZE = 96
+    const MIN_HERO_SIZE = 34
+    const MAX_HERO_SIZE = 160
 
     function text(value) {
       return typeof value === 'string' ? value.trim() : ''
@@ -21,6 +24,14 @@ window.__ModuleLoader__.load({
       return typeof props?.size === 'number' && Number.isFinite(props.size)
         ? props.size
         : fallback
+    }
+
+    function heroSize(cfg, props) {
+      const configured = Number(cfg.heroSize)
+      if (Number.isFinite(configured)) {
+        return Math.min(MAX_HERO_SIZE, Math.max(MIN_HERO_SIZE, configured))
+      }
+      return sizeOf(props, DEFAULT_HERO_SIZE)
     }
 
     function sourceFor(cfg, target) {
@@ -132,7 +143,7 @@ window.__ModuleLoader__.load({
         const heroLogo = sourceFor(cfg, 'hero')
         if (heroLogo !== '') {
           occupy(ctx, 'conversation.hero.brand.mark', (props) =>
-            h(BrandMark, { source: heroLogo, size: sizeOf(props, 34) }))
+            h(BrandMark, { source: heroLogo, size: heroSize(cfg, props) }))
         }
       }
 
